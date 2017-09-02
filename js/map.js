@@ -1,7 +1,13 @@
 'use strict';
+
+
+//  контейнер для флагов
+var pinsContainer = document.querySelector('.tokyo__pin-map');
+
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
 var OFFER_TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -12,7 +18,7 @@ var OFFER_TITLES = [
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'
 ];
-var TYPES_OF_HOUSE = [
+var OFFER_TYPES = [
   'flat',
   'house',
   'bungalo'
@@ -31,12 +37,24 @@ var CHECKIN_OUT_TIMES = [
   '14:00',
 ];
 
+var OFFER_TYPE = {
+  flat: 'Квартира',
+  bungalo: 'Бунгало',
+  house: 'Дом'
+};
 var createAnnouncements = function (announcementsCount) {
   var a = [];
   for (announcementsCount = 0; announcementsCount < 8; announcementsCount++) {
     var location = {
       x: getRandomNumber(300, 900),
       y: getRandomNumber(100, 500)
+    };
+    var getFeaturesArr = function () {
+      var feature = [];
+      for (var i = 0; i < Math.floor(Math.random() * FEATURES.length + 1); i++) {
+        feature.push(FEATURES[getRandomNumber(0, FEATURES.length - 1)]);
+      }
+      return feature;
     };
     a.unshift(
         {
@@ -51,8 +69,8 @@ var createAnnouncements = function (announcementsCount) {
             'guests': getRandomNumber(1, 10),
             'checkin': CHECKIN_OUT_TIMES[getRandomNumber(0, CHECKIN_OUT_TIMES.length - 1)],
             'checkout': CHECKIN_OUT_TIMES[getRandomNumber(0, CHECKIN_OUT_TIMES.length - 1)],
-            'type': TYPES_OF_HOUSE[getRandomNumber(0, TYPES_OF_HOUSE.length - 1)],
-            'features': FEATURES[getRandomNumber(0, FEATURES.length - 1)],
+            'type': OFFER_TYPES[getRandomNumber(0, OFFER_TYPES.length - 1)],
+            'features': getFeaturesArr(),
             'description': '',
             'photos': []
           },
@@ -66,9 +84,11 @@ var createAnnouncements = function (announcementsCount) {
   return a;
 };
 
+//  массив флагов
 var announcements = createAnnouncements(8);
-var pinsContainer = document.querySelector('.tokyo__pin-map');
 
+
+//  создаем одну метку с флагом
 var createPin = function (pinNumber) {
   var pinElement = document.createElement('div');
   var pinImg = document.createElement('img');
@@ -82,11 +102,48 @@ var createPin = function (pinNumber) {
   return pinElement;
 };
 
-var renderPins = function (container, pins) {
-  for (var i = 0; i < pins.length; i++) {
-    var pinElem = createPin(pins[i]);
-    container.appendChild(pinElem);
-  }
+var fragment = document.createDocumentFragment();
+
+//  cуем флаги во фрагмент
+for (var i = 0; i < announcements.length; i++) {
+  var pinElem = createPin(announcements[i]);
+  fragment.appendChild(pinElem);
+}
+
+//  суем флаги в контейнер
+pinsContainer.appendChild(fragment);
+
+
+//  создаем новую панель диалога
+var createNewDialogPanel = function () {
+  var template = document.querySelector('#lodge-template');
+  var newDialogPanel = template.content.cloneNode(true);
+  newDialogPanel.querySelector('.lodge__title').textContent = announcements[0].offer.title;
+  newDialogPanel.querySelector('.lodge__address').textContent = announcements[0].offer.address;
+  newDialogPanel.querySelector('.lodge__price').innerHTML = announcements[0].offer.price + ' ' + '&#x20bd;/ночь';
+  newDialogPanel.querySelector('.lodge__type').textContent = OFFER_TYPE[announcements[0].offer.type];
+  newDialogPanel.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + announcements[0].offer.guests + ' гостей в ' + announcements[0].offer.rooms + ' комнатах';
+  newDialogPanel.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + announcements[0].offer.checkin + ', выезд до ' + announcements[0].offer.checkout;
+  (function () {
+    for (var j = 0; j < announcements[0].offer.features.length; j++) {
+      var k = '<span class = "feature__image feature__image--' + announcements[0].offer.features[j] + '"' + '></span>';
+      newDialogPanel.querySelector('.lodge__features').innerHTML += k;
+    }
+  }());
+  newDialogPanel.querySelector('.lodge__description').textContent = announcements[0].offer.description;
+  return newDialogPanel;
 };
 
-renderPins(pinsContainer, announcements);
+//  меняем старую панель на новую
+var changeDialogPanel = function () {
+  var a = document.querySelector('#offer-dialog');
+  var b = document.querySelector('.dialog__panel');
+  var c = document.querySelector('.dialog__title img');
+  a.removeChild(b);
+  a.appendChild(createNewDialogPanel());
+  c.setAttribute('src', announcements[0].author.avatar);
+};
+
+changeDialogPanel();
+
+
