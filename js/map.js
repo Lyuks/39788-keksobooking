@@ -42,21 +42,27 @@ var OFFER_TYPE = {
   bungalo: 'Бунгало',
   house: 'Дом'
 };
+var getFeaturesArr = function () {
+  var feature = [];
+  var featuresClone = FEATURES;
+  var randomNumber = Math.floor(Math.random() * FEATURES.length + 1);
+  for (var i = 0; i < randomNumber; i++) {
+    var randomArrElem = getRandomNumber(0, featuresClone.length - 1);
+    feature.push(featuresClone[randomArrElem]);
+    featuresClone.splice(randomArrElem, 1);
+  }
+  return feature;
+};
+
 var createAnnouncements = function (announcementsCount) {
-  var a = [];
-  for (announcementsCount = 0; announcementsCount < 8; announcementsCount++) {
+  var announceArr = [];
+  for (var i = 0; i < announcementsCount; i++) {
     var location = {
       x: getRandomNumber(300, 900),
       y: getRandomNumber(100, 500)
     };
-    var getFeaturesArr = function () {
-      var feature = [];
-      for (var i = 0; i < Math.floor(Math.random() * FEATURES.length + 1); i++) {
-        feature.push(FEATURES[getRandomNumber(0, FEATURES.length - 1)]);
-      }
-      return feature;
-    };
-    a.unshift(
+
+    announceArr.push(
         {
           'author': {
             'avatar': 'img/avatars/user0' + getRandomNumber(1, 8) + '.png'
@@ -81,7 +87,7 @@ var createAnnouncements = function (announcementsCount) {
         }
     );
   }
-  return a;
+  return announceArr;
 };
 
 //  массив флагов
@@ -136,12 +142,12 @@ var createNewDialogPanel = function () {
 
 //  меняем старую панель на новую
 var changeDialogPanel = function () {
-  var a = document.querySelector('#offer-dialog');
-  var b = document.querySelector('.dialog__panel');
-  var c = document.querySelector('.dialog__title img');
-  a.removeChild(b);
-  a.appendChild(createNewDialogPanel());
-  c.setAttribute('src', announcements[0].author.avatar);
+  var dialog = document.querySelector('#offer-dialog');
+  var panel = document.querySelector('.dialog__panel');
+  var img = document.querySelector('.dialog__title img');
+  dialog.removeChild(panel);
+  dialog.appendChild(createNewDialogPanel());
+  img.setAttribute('src', announcements[0].author.avatar);
 };
 
 changeDialogPanel();
