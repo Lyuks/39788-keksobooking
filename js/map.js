@@ -43,8 +43,9 @@ var OFFER_TYPE = {
   house: 'Дом'
 };
 var getFeaturesArr = function () {
+// debugger;
   var feature = [];
-  var featuresClone = FEATURES;
+  var featuresClone = FEATURES.slice();
   var randomNumber = Math.floor(Math.random() * FEATURES.length + 1);
   for (var i = 0; i < randomNumber; i++) {
     var randomArrElem = getRandomNumber(0, featuresClone.length - 1);
