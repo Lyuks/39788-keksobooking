@@ -65,7 +65,7 @@ var createAnnouncements = function (announcementsCount) {
     announceArr.push(
         {
           'author': {
-            'avatar': 'img/avatars/user0' + getRandomNumber(1, 8) + '.png'
+            'avatar': 'img/avatars/user0' + (i + 1) + '.png'
           },
           'offer': {
             'title': OFFER_TITLES[getRandomNumber(0, OFFER_TITLES.length - 1)],
@@ -152,4 +152,21 @@ var changeDialogPanel = function () {
 
 changeDialogPanel();
 
+
+var dialog = document.querySelector('#offer-dialog');
+dialog.classList.add('hidden');
+
+
+pinsContainer.addEventListener('click', function (e) {
+  var target = e.target;
+  if (target.classList.contains('pin')) {
+    target.classList.add('pin--active');
+    dialog.classList.remove('hidden');
+    console.log(target);
+  } else {
+    target.parentNode.classList.add('pin--active');
+    dialog.classList.remove('hidden');
+    console.log(target);
+  }
+});
 
