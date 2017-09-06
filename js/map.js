@@ -152,14 +152,15 @@ var changeDialogPanel = function () {
 
 changeDialogPanel();
 
+//  пишем обработчики событий
 
 var dialog = document.querySelector('#offer-dialog');
 dialog.classList.add('hidden');
 
 
 pinsContainer.addEventListener('click', function (e) {
-  var target = e.target;
   var activePin = document.querySelector('.pin--active');
+  var target = e.target;
   if (target.classList.contains('pin')) {
     target.classList.add('pin--active');
     dialog.classList.remove('hidden');
@@ -169,9 +170,14 @@ pinsContainer.addEventListener('click', function (e) {
     dialog.classList.remove('hidden');
     console.log(target);
   }
-  console.log('а активный пин ' + activePin);
   if (activePin != null) {
   activePin.classList.remove('pin--active');
   }
 });
 
+var dialogClose = dialog.querySelector('.dialog__close');
+dialogClose.addEventListener('click', function (evt) {
+  var activePin = document.querySelector('.pin--active');
+  dialog.classList.add('hidden');
+  activePin.classList.remove('pin--active');
+});
