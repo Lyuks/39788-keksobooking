@@ -61,11 +61,15 @@ var createAnnouncements = function (announcementsCount) {
       x: getRandomNumber(300, 900),
       y: getRandomNumber(100, 500)
     };
-
+    var imgNumber = function () {
+      if (i < 100) {
+        return '0' + (+i + 1);
+      } return i;
+    };
     announceArr.push(
         {
           'author': {
-            'avatar': 'img/avatars/user0' + (i + 1) + '.png'
+            'avatar': 'img/avatars/user' + imgNumber() + '.png'
           },
           'offer': {
             'title': OFFER_TITLES[getRandomNumber(0, OFFER_TITLES.length - 1)],
@@ -95,9 +99,10 @@ var announcements = createAnnouncements(8);
 
 
 //  создаем одну метку с флагом
-var createPin = function (pinNumber) {
+var createPin = function (pinNumber, index) {
   var pinElement = document.createElement('div');
   var pinImg = document.createElement('img');
+  pinElement.setAttribute('data-index', index);
   pinElement.setAttribute('style', 'left:' + pinNumber.location.x + 'px; top:' + pinNumber.location.y + 'px');
   pinElement.setAttribute('tabindex', 0);
   pinElement.classList.add('pin');
@@ -113,7 +118,7 @@ var fragment = document.createDocumentFragment();
 
 //  cуем флаги во фрагмент
 for (var i = 0; i < announcements.length; i++) {
-  var pinElem = createPin(announcements[i]);
+  var pinElem = createPin(announcements[i], i);
   fragment.appendChild(pinElem);
 }
 
@@ -150,8 +155,6 @@ var changeDialogPanel = function (announcement) {
   dialog.appendChild(createNewDialogPanel(announcement));
   img.setAttribute('src', announcement.author.avatar);
 };
-// Я ДОБАВИЛ ПАРАМЕТР В changeDialogPanel и createNewDialogPanel, Я ПОНИМАЮ ЧТО МНЕ НУЖНО ВЫЗВАТЬ changeDialogPanel C ИНДЕКСОМ i, НО Я НЕ ПОНИМАЮ ГДЕ,КОГДА И КАК ЭТО НАДО ДЕЛАТЬ, ПОЭТОМУ СТРОКУ НИЖЕ У МЕНЯ ТУПО ПЕРВЫЙ ЭЛЕМЕНТ :((((
-changeDialogPanel(announcements[0]);
 
 //  пишем обработчики событий
 var ESCAPE_KEY = 27;
@@ -161,10 +164,26 @@ var dialogClose = dialog.querySelector('.dialog__close');
 dialogClose.setAttribute('tabindex', 1);
 dialog.classList.add('hidden');
 
-//  обработчику по клику на контейнер с объявлениями
+//  обработчик по клику на контейнер с объявлениями
+
 pinsContainer.addEventListener('click', function (e) {
   var activePin = document.querySelector('.pin--active');
   var target = e.target;
+
+  //  получаем значение дата атрибута
+  function getAttribute() {
+    if ((target.getAttribute('data-index')) !== null) {
+      return (target.getAttribute('data-index'));
+    } else {
+      return (target.parentNode.getAttribute('data-index'));
+    }
+  }
+  var attrNumber = getAttribute();
+  changeDialogPanel(announcements[attrNumber]);
+
+  if (activePin !== null) {
+    activePin.classList.remove('pin--active');
+  }
   if (target.classList.contains('pin')) {
     target.classList.add('pin--active');
     dialog.classList.remove('hidden');
@@ -173,9 +192,8 @@ pinsContainer.addEventListener('click', function (e) {
     target.parentNode.classList.add('pin--active');
     dialog.classList.remove('hidden');
   }
-  if (activePin !== null) {
-    activePin.classList.remove('pin--active');
-  }
+
+
 });
 
 // функция удаления класса активного пина
