@@ -99,7 +99,7 @@ var createPin = function (pinNumber) {
   var pinElement = document.createElement('div');
   var pinImg = document.createElement('img');
   pinElement.setAttribute('style', 'left:' + pinNumber.location.x + 'px; top:' + pinNumber.location.y + 'px');
-  pinImg.setAttribute('tabindex', 0);
+  pinElement.setAttribute('tabindex', 0);
   pinElement.classList.add('pin');
   pinElement.appendChild(pinImg);
   pinImg.setAttribute('width', '40');
@@ -154,9 +154,11 @@ var changeDialogPanel = function (announcement) {
 changeDialogPanel(announcements[0]);
 
 //  пишем обработчики событий
-
+var ESCAPE_KEY = 27;
+var ENTER_KEY = 13;
 var dialog = document.querySelector('#offer-dialog');
 var dialogClose = dialog.querySelector('.dialog__close');
+dialogClose.setAttribute('tabindex', 1);
 dialog.classList.add('hidden');
 
 //  обработчику по клику на контейнер с объявлениями
@@ -192,18 +194,18 @@ var onDialogCloseClick = function () {
 
 //  удаление активного пина по нажатию esc
 var onEscapeTap = function (e) {
-  if (e.keyCode === 27) {
+  if (e.keyCode === ESCAPE_KEY) {
     dialog.classList.add('hidden');
   }
   removeActivePin();
 };
 
 var onEnterTap = function (e) {
-  if (e.keyCode === 13) {
+  if (e.keyCode === ENTER_KEY) {
     dialog.classList.remove('hidden');
   }
 };
-dialog.addEventListener('keydown', onEnterTap);
+pinsContainer.addEventListener('keydown', onEnterTap);
 document.addEventListener('keydown', onEscapeTap);
 dialogClose.addEventListener('click', onDialogCloseClick);
 
