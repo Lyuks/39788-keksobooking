@@ -303,7 +303,9 @@ var noticeForm = document.querySelector('.notice__form');
 noticeForm.setAttribute('action', 'https://1510.dump.academy/keksobooking');
 
 var onNoticeFormSubmit = function (e) {
+  if(response==='OK') {
   noticeForm.reset();
+  }
 }
 noticeForm.addEventListener('submit', onNoticeFormSubmit);
 
