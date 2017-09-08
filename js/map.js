@@ -178,7 +178,7 @@ pinsContainer.addEventListener('click', function (e) {
   var activePin = document.querySelector('.pin--active');
   var target = e.target;
 
-//  получаем значение дата атрибута
+  //  получаем значение дата атрибута
   changeDialogPanel(announcements[getAttribute(target)]);
   if (activePin !== null) {
     activePin.classList.remove('pin--active');
@@ -245,11 +245,15 @@ priceForNight.setAttribute('max', '1000000');
 
 var timeIn = document.querySelector('#timein');
 var timeOut = document.querySelector('#timeout');
-var onTimeInClick = function(e) {
+var onTimeInClick = function () {
   timeOut.value = timeIn.value;
-  timeOut.setAttribute('required','required');
 };
+var onTimeOutClick = function () {
+  timeIn.value = timeOut.value;
+};
+
 timeIn.addEventListener('change', onTimeInClick);
+timeOut.addEventListener('change', onTimeOutClick);
 
 var houseType = document.querySelector('#type');
 var onHouseTypeClick = function () {
@@ -266,13 +270,13 @@ var onHouseTypeClick = function () {
     case 'palace':
       priceForNight.setAttribute('min', '10000');
       break;
-}
+  }
 };
 houseType.addEventListener('change', onHouseTypeClick);
 
 var roomNumber = document.querySelector('#room_number');
 var guestsNumber = document.querySelector('#capacity');
-var onRoomNumberClick = function() {
+var onRoomNumberClick = function () {
   switch (roomNumber.value) {
     case '1':
       guestsNumber.value = roomNumber.value;
@@ -296,23 +300,16 @@ var changeSelects = function () {
   var thirdSelect = document.querySelector('#capacity option:nth-child(3)');
   firstSelect.setAttribute('selected', false);
   thirdSelect.setAttribute('selected', true);
-}
+};
 changeSelects();
 
 var noticeForm = document.querySelector('.notice__form');
 noticeForm.setAttribute('action', 'https://1510.dump.academy/keksobooking');
 
-var onNoticeFormSubmit = function (e) {
-  if(response==='OK') {
-  noticeForm.reset();
-  }
-}
-noticeForm.addEventListener('submit', onNoticeFormSubmit);
-
 //  подсветка незаполненных инпутов при отправке
 var submitButton = document.querySelector('.form__submit');
 var allFields = noticeForm.querySelectorAll('input');
-var onSubmitFormClick = function() {
+var onSubmitFormClick = function () {
   for (i = 0; i < allFields.length; i++) {
     if (allFields[i].checkValidity() === false) {
       allFields[i].setAttribute('style', 'border:3px solid red');
@@ -322,5 +319,4 @@ var onSubmitFormClick = function() {
   }
 };
 submitButton.addEventListener('click', onSubmitFormClick);
-console.log(allFields);
 
