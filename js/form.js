@@ -23,20 +23,24 @@
     var activePin = document.querySelector('.pin--active');
     var target = e.target;
 
-    //  получаем значение дата атрибута
-    window.changeDialogPanel(window.announcements[getAttribute(target)]);
-    if (activePin !== null) {
-      activePin.classList.remove('pin--active');
-    }
-    if (target.classList.contains('pin')) {
-      target.classList.add('pin--active');
-      dialog.classList.remove('hidden');
-
+    if (target.classList.contains('pin__main') || target.hasAttribute('alt')) {
+      e.preventDefault();
     } else {
-      target.parentNode.classList.add('pin--active');
-      dialog.classList.remove('hidden');
-    }
 
+    //  получаем значение дата атрибута
+      window.changeDialogPanel(window.announcements[getAttribute(target)]);
+      if (activePin !== null) {
+        activePin.classList.remove('pin--active');
+      }
+      if (target.classList.contains('pin')) {
+        target.classList.add('pin--active');
+        dialog.classList.remove('hidden');
+
+      } else {
+        target.parentNode.classList.add('pin--active');
+        dialog.classList.remove('hidden');
+      }
+    }
 
   });
 
@@ -73,8 +77,9 @@
 
   // делаем валидацию форм
 
-  var addressForm = document.querySelector('#address');
-  addressForm.setAttribute('required', 'required');
+  window.addressForm = document.querySelector('#address');
+  window.addressForm.setAttribute('required', 'required');
+  window.addressForm.setAttribute('readonly', true);
 
   var formTitle = document.querySelector('#title');
   formTitle.setAttribute('required', 'required');
