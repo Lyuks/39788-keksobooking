@@ -11,6 +11,7 @@ mainPinHandle.addEventListener('mousedown', function (e) {
 
   var onMouseMove = function (moveE) {
     moveE.preventDefault();
+
     var shift = {
       x: startCoords.x - moveE.clientX,
       y: startCoords.y - moveE.clientY
@@ -21,11 +22,11 @@ mainPinHandle.addEventListener('mousedown', function (e) {
       y: moveE.clientY
     };
 
-    mainPinHandle.style.top = (mainPinHandle.offsetTop - shift.y) + 'px';
     mainPinHandle.style.left = (mainPinHandle.offsetLeft - shift.x) + 'px';
-    var xCoord = mainPinHandle.style.top;
-    var yCoord = mainPinHandle.style.left;
-    window.addressForm.setAttribute('value', 'x:' + xCoord.substring(0, xCoord.length - 2) + ' y:' + yCoord.substring(0, yCoord.length - 2));
+    mainPinHandle.style.top = (mainPinHandle.offsetTop - shift.y) + 'px';
+    var xCoord = mainPinHandle.style.left;
+    var yCoord = mainPinHandle.style.top;
+    window.addressForm.setAttribute('value', 'x:' + (parseInt(xCoord.substring(0, xCoord.length - 2), 10) + 37) + ' y:' + (parseInt(yCoord.substring(0, yCoord.length - 2), 10) + 47));
   };
 
   var onMouseUp = function (upE) {
