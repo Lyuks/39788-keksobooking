@@ -22,11 +22,13 @@ mainPinHandle.addEventListener('mousedown', function (e) {
       y: moveE.clientY
     };
 
-    mainPinHandle.style.left = (mainPinHandle.offsetLeft - shift.x) + 'px';
-    mainPinHandle.style.top = (mainPinHandle.offsetTop - shift.y) + 'px';
-    var xCoord = parseInt(mainPinHandle.style.left.substring(0, mainPinHandle.style.left.length - 2), 10) + 37;
-    var yCoord = parseInt(mainPinHandle.style.top.substring(0, mainPinHandle.style.top.length - 2), 10) + 94;
-    window.addressForm.setAttribute('value', 'x:' + xCoord + ' y:' + yCoord);
+    var xCoord = mainPinHandle.offsetLeft - shift.x;
+    var yCoord = mainPinHandle.offsetTop - shift.y;
+
+    mainPinHandle.style.left = xCoord + 'px';
+    mainPinHandle.style.top = yCoord + 'px';
+
+    window.addressForm.setAttribute('value', 'x:' + (xCoord + 37) + ' y:' + (yCoord + 94));
   };
 
   var onMouseUp = function (upE) {
