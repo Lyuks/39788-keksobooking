@@ -24,9 +24,9 @@ mainPinHandle.addEventListener('mousedown', function (e) {
 
     mainPinHandle.style.left = (mainPinHandle.offsetLeft - shift.x) + 'px';
     mainPinHandle.style.top = (mainPinHandle.offsetTop - shift.y) + 'px';
-    var xCoord = mainPinHandle.style.left;
-    var yCoord = mainPinHandle.style.top;
-    window.addressForm.setAttribute('value', 'x:' + (parseInt(xCoord.substring(0, xCoord.length - 2), 10) + 37) + ' y:' + (parseInt(yCoord.substring(0, yCoord.length - 2), 10) + 94));
+    var xCoord = parseInt(mainPinHandle.style.left.substring(0, mainPinHandle.style.left.length - 2), 10) + 37;
+    var yCoord = parseInt(mainPinHandle.style.top.substring(0, mainPinHandle.style.top.length - 2), 10) + 94;
+    window.addressForm.setAttribute('value', 'x:' + xCoord + ' y:' + yCoord);
   };
 
   var onMouseUp = function (upE) {
