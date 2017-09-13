@@ -28,7 +28,7 @@
     } else {
 
     //  получаем значение дата атрибута
-      window.changeDialogPanel(window.announcements[getAttribute(target)]);
+      window.showCard(window.announcements[getAttribute(target)]);
       if (activePin !== null) {
         activePin.classList.remove('pin--active');
       }
@@ -95,34 +95,39 @@
 
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
-  var onTimeInClick = function () {
-    timeOut.value = timeIn.value;
-  };
-  var onTimeOutClick = function () {
-    timeIn.value = timeOut.value;
-  };
+  var timeInValues = timeIn.querySelectorAll('option');
+  var timeOutValues = timeOut.querySelectorAll('option');
 
-  timeIn.addEventListener('change', onTimeInClick);
-  timeOut.addEventListener('change', onTimeOutClick);
+  window.syncValues = function (element, value) {
+    element.value = value;
+  };
+  window.synchronizeFields(timeIn, timeOut, timeInValues, timeOutValues, syncValues);
 
+
+// cинхронизируем поля Тип жилья и Цена за ночь
   var houseType = document.querySelector('#type');
   var onHouseTypeClick = function () {
     switch (houseType.value) {
       case 'house':
         priceForNight.setAttribute('min', '5000');
+        priceForNight.setAttribute('placeholder', '5000');
         break;
       case 'bungalo':
         priceForNight.setAttribute('min', '0');
+        priceForNight.setAttribute('placeholder', '0');
         break;
       case 'flat':
         priceForNight.setAttribute('min', '1000');
+        priceForNight.setAttribute('placeholder', '1000');
         break;
       case 'palace':
         priceForNight.setAttribute('min', '10000');
+        priceForNight.setAttribute('placeholder', '10000');
         break;
     }
   };
   houseType.addEventListener('change', onHouseTypeClick);
+// заканчиваем синхронизировать поля Тип жилья и Цена за ночь
 
   var roomNumber = document.querySelector('#room_number');
   var guestsNumber = document.querySelector('#capacity');

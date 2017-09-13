@@ -4,7 +4,7 @@
 (function () {
 
   //  создаем новую панель диалога
-  var createNewDialogPanel = function (announcement) {
+  window.createNewDialogPanel = function (announcement) {
     var template = document.querySelector('#lodge-template');
     var newDialogPanel = template.content.cloneNode(true);
     newDialogPanel.querySelector('.lodge__title').textContent = announcement.offer.title;
@@ -22,14 +22,5 @@
     newDialogPanel.querySelector('.lodge__description').textContent = announcement.offer.description;
     return newDialogPanel;
   };
-
-  //  меняем старую панель на новую
-  window.changeDialogPanel = function (announcement) {
-    var dialog = document.querySelector('#offer-dialog');
-    var panel = document.querySelector('.dialog__panel');
-    var img = document.querySelector('.dialog__title img');
-    dialog.removeChild(panel);
-    dialog.appendChild(createNewDialogPanel(announcement));
-    img.setAttribute('src', announcement.author.avatar);
-  };
 }());
+

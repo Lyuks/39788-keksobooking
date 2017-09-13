@@ -1,5 +1,7 @@
 'use strict';
 
+// делаем перетаскивание пина
+
 var mainPinHandle = document.querySelector('.pin__main');
 
 mainPinHandle.addEventListener('mousedown', function (e) {
