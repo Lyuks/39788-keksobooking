@@ -134,7 +134,7 @@
   houseType.addEventListener('change', onHouseTypeClick);
 
   var syncValueWithMin = function (element, value) {
-    element.min = value;
+    (element.getAttribute('min')) = value;
   };
 
   window.synchronizeFields(houseType, priceForNight, houseTypeValues, [0, 1000, 5000, 10000], syncValueWithMin);
