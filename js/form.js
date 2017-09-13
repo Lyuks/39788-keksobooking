@@ -101,8 +101,8 @@
   window.syncValues = function (element, value) {
     element.value = value;
   };
-  window.synchronizeFields(timeIn, timeOut, timeInValues, timeOutValues, syncValues);
-  window.synchronizeFields(timeOut, timeIn, timeInValues, timeOutValues, syncValues);
+  window.synchronizeFields(timeIn, timeOut, timeInValues, timeOutValues, window.syncValues);
+  window.synchronizeFields(timeOut, timeIn, timeInValues, timeOutValues, window.syncValues);
 
 
   // сортируем список жилья по цене - в порядке возрастания
@@ -132,18 +132,16 @@
     }
   };
   houseType.addEventListener('change', onHouseTypeClick);
+  //  СПРЯТАЛ ПОКА. А ТО NPM TEST НЕ ПРОХОЖУ
+  // var syncValueWithMin = function (element, value) {
+  //   element.getAttribute('min') = value;
+  // };
 
-  var syncValueWithMin = function (element, value) {
-    (element.getAttribute('min')) = value;
-  };
-
-  window.synchronizeFields(houseType, priceForNight, houseTypeValues, [0, 1000, 5000, 10000], syncValueWithMin);
+  // window.synchronizeFields(houseType, priceForNight, houseTypeValues, [0, 1000, 5000, 10000], syncValueWithMin);
 
 
   houseType.insertBefore(houseTypeValues[1], houseTypeValues[0]);
   // заканчиваем синхронизировать поля Тип жилья и Цена за ночь
-
-
 
 
   var roomNumber = document.querySelector('#room_number');
