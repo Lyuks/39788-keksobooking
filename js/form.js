@@ -102,10 +102,15 @@
     element.value = value;
   };
   window.synchronizeFields(timeIn, timeOut, timeInValues, timeOutValues, syncValues);
+  window.synchronizeFields(timeOut, timeIn, timeInValues, timeOutValues, syncValues);
 
 
-// cинхронизируем поля Тип жилья и Цена за ночь
+  // сортируем список жилья по цене - в порядке возрастания
   var houseType = document.querySelector('#type');
+  var houseTypeValues = houseType.querySelectorAll('option');
+
+  // cинхронизируем поля Тип жилья и Цена за ночь
+
   var onHouseTypeClick = function () {
     switch (houseType.value) {
       case 'house':
@@ -127,7 +132,19 @@
     }
   };
   houseType.addEventListener('change', onHouseTypeClick);
-// заканчиваем синхронизировать поля Тип жилья и Цена за ночь
+
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+  };
+
+  window.synchronizeFields(houseType, priceForNight, houseTypeValues, [0, 1000, 5000, 10000], syncValueWithMin);
+
+
+  houseType.insertBefore(houseTypeValues[1], houseTypeValues[0]);
+  // заканчиваем синхронизировать поля Тип жилья и Цена за ночь
+
+
+
 
   var roomNumber = document.querySelector('#room_number');
   var guestsNumber = document.querySelector('#capacity');
